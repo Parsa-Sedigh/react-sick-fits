@@ -181,6 +181,207 @@ in before, didn't exist, until we added it. If it didn't show up, probably you n
 
 Let's create a nav on our Page comp.*/
 /* 5-05 - Creating our Header and Nav Components:
- */
+Inside Page comp we're likely gonna have a Header comp and a nav comp and footer and anything else that needs to show up on every single
+page. So create Header comp. When you have <header> it means it's a html tag but <Header> would be a comp tag. With wes bos eslint configs,
+if you save the file, it would put () around the jsx and move the first and last element to a new line. The format with () and first
+and last elements on a new line is better. Now include Header comp in Page comp.
 
+In vscode and in it's built-in emmet expand abbreviation and that will expand the for example: Header to <Header></Header> tag, by highlighting
+that Header text and hit tab. In wes bos prettier, if nothing is INSIDE of a tag and you hit save, it will change it from an open close tab, to
+a self closing tag, so from: <Header></Header> to <Header /> . But make sure if you have sth like <div> </div> which hasn't anything inside it
+but we also DON'T want it to be a self closing tag after save, therefore, put sth inside it to avoid that behavior of prettier, which otherwise
+would make it to <div /> .
+
+By hitting ctrl+space, in vscode, it will auto import that thing your cursor is currently on it.
+Currently if you use emmet inside jsx to produce elements, like: div.bar then hit tab, it will use className instead of class(which is valid), but
+in near future that will be able to say class instead of className.
+
+How do you link from page to page in nextjs?
+You might think you can do a: <a href="/..."></a>, but it has the regular old link and that's refreshing the page every time you click on it.
+Nextjs uses a combination of html5 push state which is changing the url, as well as the ability to trigger and re-render pages when that url
+has changed. So we use nextjs <Link href=""> tag. Previously in nextjs we also HAD TO put an anchor link inside of a <Link> tag, but that's not
+true anymore UNLESS you have nested elements inlin the <Link> and not just text, so if you have just text for INSIDE a Link element, you don't need
+to nest that anchor tag, otherwise, it's needed(we will run to this in future).
+
+In vscode, you can highlight(select) some lines and then hit cmd + shift + l to put a cursor on every single line.
+
+In vscode, for making the first letter of a word or just making a character, uppercase, when you're highlighting the CHARACTER that you want to make
+it uppercase, you can go to cmd pallete and write: upp and hit enter.
+
+We imported Nav in Header comp instead of Page, because well that nav is part of Header and we know that Header itself is imported into the Page.
+
+Anytime that you want to link to sth that is PART OF your website, you use the Nextjs's <Link> tag, but anytime you want to link to sth that is
+OUTSIDE of your site, you use a regular <a href=""> anchor link.
+
+6.06 - An Intro to Styled Components and CSS:
+There's all kind of different ways that you can write css in react project, you could literally add classes to elements and then pop file
+in there(or do the same thing with sass), you can use utility framework or we can write our css via scoped css and the package we're gonna be
+using is styled comps. But the ideas behind styled comps is relevant in all react base and even angular ... base scoped css.
+The idea behind styled comps or css-in-js is that you define all of your css IN comps as well and that have some benefits:
+1) We're gonna be able to scope our css really easy
+2) You can use JS values inside of css. So if you have a variable that is part of your state or any par tof your react app, you can
+use that variable INSIDE of your css.
+
+For example for styling an <h1>..</h1>, instead of applying classes to things(in this case, <h1> element) and going ELSEWHERE(some OTHER files),
+we're gonna create an h1 COMPONENT with the styles that are already attached to it and then that will immediately scope all of the styles
+to that <h1> tag. So in Header comp, create a variable named Logo. For styled.... , don't use "" or '' , just backticks. For example when you
+have styled.h1`` , styled.h1 is a tagged template literal and it's kind of running a function called styled.h1 .
+
+Then what we do to APPLY that css is that we're gonna go to where we have used our <h1> and we're gonna replace the <h1> with our new component
+that we just made(in this case, the Logo comp). Now that <Logo> comp is still being rendered as <h1> tag but it's got that kind of random class
+attached to it and that class has whatever styles we write for that <h1> .
+
+Now let's make the <Logo> to actually encompose the entire thing, so instead of having:
+<Link>
+    <Logo>...</Logo>
+</Link>
+
+we would have Logo comp to wrap the <Link> . So the <Link> would be INSIDE the <Logo> and this will translate to an <h1> with an <a> inside of it.
+So by doing this, now we don't have to go and add a very specific classNames to elements and also be careful to not accidently ALSO apply to some
+other elements.
+
+The top level styled comps will be applied DIRECTLY to that styled comp(so styled.h1 will be applied directly to <h1>) and then you can also have
+the desendent selectors INSIDE each of styled comps.
+
+In vscode, you can write: z2 for z-index: 2; . So write z2 and then open command pallete and write expand abbreviation. If you don't have
+keyboard shortcut hooked up to that emmet expand abbr(like ^ E shortcut), you can do it in vscode settings.
+
+If that Logo comp(styled comp) was to be reused in other portions of website, then what we would do is we would drop that Logo styled comp, into
+it's own file or it's own comp. So you can see the styled comps that we have in styles folder.
+
+For example if you have a Form styled component, instead of using a regular <form> tag, we can use a styled comp <Form> tag and it still takes or
+accepts all of the regular attrs and props that you used to send to a <form> tag, why?
+Because we used styled.form`` and in here, form is the native html <form> element.
+
+Some people say ALWAYS put your styled comps in a separate file, but the wes's approaching way is at first, he just defines the styles IN
+the component file where he used that styled comp and then as he finds EITHER it's(that styled comp) getting too big in that one comp(regular comp),
+or he needs to reuse that style in 6 or 7 or even 2 different places in the website, then we would move it to it's own file and in that file, export
+it and where we need it, import it like a regular comp.
+
+Let's make another styled comp for <header> in Header comp. Wes, usually likes to put 'styles' text on the end of name of styled comp, so that it
+notes to us that it's a STYLED comp and not a regular react comp.
+Now replace the native <header> tag with the <HeaderStyles> styled component.
+So with styled comps, we don't change the markup but we do change which css is being apply to it.
+When you have:
+EX)
+const HeaderStyles = styled.header`
+  .bar {
+
+  }
+`;
+
+in .bar there, you're defining the css or styles for the .bar class INSIDE of HeaderStyles styled component.
+
+Learn: In css or sass, when you have: var(--black, black) it means use the variable --black or fallback to regular css black color.
+
+Styled comps does have the ability to do like theme variables, but with native css variables(var(--<variable>) wes hasn't found need for that
+specific thing(theme variables of styled comps). Therefore we just use native css variables.
+
+For now we don't style for responsiveness, we'll come back for it.
+
+Currently we have a problem and that is when you reload the page, in the BEGINNING, it doesn't have any styles but after a brief moment, the
+styles are applied to the page(flicker, where you get an un-styled page for just a second), we're gonna look at how to fix that with SSR.*/
+/* 7.07 - Global Styles, Typography and Layout Styles:
+We're gonna use scope styles(in contrast to GLOBAL styles) in 90% of our app, sometimes you do want global styles and the reason behind that is
+sometimes you want to lay on a base before you go a head and build your website, so some basic stuff like colors and fonts and sizing of
+items, that all needs to happen globally, so you're not left re-defining the same font-size a hundred times throughout your app.
+In order to do that, use createGlobalStyle`` api inside of styled comps and then we simply just inject that into our app. We can do that via
+Page.js and there, let's create some global styles. So: const GlobalStyles = ...; and inside backticks of createGlobalStyle``, we just
+put any styles that we wanna be globally applied. So first, let's setup some variables.
+You can set css variables on html tag or :root , you can literally set them anywhere, wes always put them on html.
+Important: The benefit of putting them on :root {} is that you could reuse that css inside a stand alone svg element.
+So because of this, I put them in :root, but wes put them in html selector.
+I intentailly wrote:  --gray: var(--grey); because that way if you accidentally typed the wrong gray variable it would just back up to the right
+one which is grey, also I did this little trick with lightGrey.
+--bs is abbreviation of box-shadow. Why?
+Because every time you add a box-shadow to sth, if you change it slightly different than other used box-shadows, your app would start to look
+like funcky and you don't know why. Also remember to don't put that box-shadow value inside quotes like it's a string, it's not a string,
+it's a css property so don't put quotes around it's value.
+
+Now you can remove the fallback values of black variable(where you have: var(--black, black);) in Header file, but you can keep them as well,
+that doesn't hurt.
+
+In order to use globalStyles which you assigned it to a variable, you can go to Page comp and inject that globalStyles, I did it above <Header /> which
+for doing that we use: <GlobalStyles />
+
+That was our first set of global styles. Now we need some fonts too. For that, write this template for @font-face first and I did it above the
+GlobalStyles in Page comp:
+@font-face {
+    font-family: '';
+    src: url();
+}
+and then put your own values there.
+
+Almost always in js land when you building a websites you're not referencing just static files, but in the case of your fonts, we WILL be doing that
+and you can see that they are stuck in public/static folder, so do that in src prop of @font-face .
+
+Now that you specified your font, you need to use it or set it, on body tag. So select body tag and use font-family property there and for it's
+value write:
+body {
+    font-family: --apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue',
+    sans-serif;
+}
+
+That's a good font stack. We try to use that --apple-system first and then right in the beginning, put the NEW font that we just set earlier which is
+'radnika_next'.
+
+Now let's do some reset. Now you could import normalize.css or you can write a couple resets yourself. So go to html tag and set some rests which are:
+box-sizing: border-box;
+Then another reset is to grab: *, *::before, *::after then set their box-sizing to inherit.
+Wes used one colon for before and after pseudo element which is for css2 not css3, so I used 2 colons instead. Then there you say:
+box-sizing: inherit; and that's how we make sure when we add padding and border to an element it takes away from the size instead of growing
+it and that's how you get a lot of those weird horizontal scroll bugs. So to avoid that we set the box-sizing of all elements and all of
+pseudo elements to inherit, in order to inherit the box-sizing of html tag.
+Another reset is to go to body tag and set padding and margin to 0 and set a default font-size and line-height there.
+
+Then we can style all of our links by using 'a' element selector.
+
+Important: You also have to select your button(it's better to select all buttons with button element selector) and apply the font-family
+ to it, because for whatever reason setting a font(font-family) on the body, does NOT also apply to buttons, which is odd, therefore
+ we have to put that whole font-family stack that we set on body, ALSO on the button selector.
+
+That was all of our global styles and they've been injected into our Page comp.
+
+Now we want to style whatever is wrapped around {children} in Page component, so we can constraint them with, and I call that: innerStyles. So
+create a styled component for that called innerStyles. Now put your {children} in Page component, INSIDE <InnerStyles> styled component.
+
+So now, in Page component, we got our <GlobalStyles /> styled comp, then <Header /> and then the <InnerStyles /> which is where all of the
+content that goes there. */
+/* 8.08 - Visualizing Route Changes:
+We need a package called nprogress. So go to _app.js file and first thing we need to do is to import the styles for nprogress and also
+remember that nprogress package also ships all the styles for you, so you can import it from 'nprogress/styles.css'. But in future, we need
+to swap to our OWN styles. So you can write a TODO in above that import statement to swap that nprogress styles with our own styles.
+
+After doing that, that would immediately break and the error says: 'Error was not caught TypeError: Cannot read property 'parentNode' of null' OR
+sth like(for wes was this): Error was not caught TypeError: can't access property "parentNode", anchorElement is null. If it broke for you,
+the reason behind that is because we haven't un-comment that <Head />. So we should write it and not comment it at the first place, that was the
+wes's mistake!!! So put the <Head /> in _document in the first place(from the beginning of writing code).
+
+After doing that, we have still another error(actually an error) which says:
+Warning: Prop `className` did not match. Server: "sc-dlfnbm bjPHvD" Client: "sc-bdfBwQ bEVSek", don't worry about that, we're gonna
+fix that in the next lesson.
+
+Then write: import NProgress from 'ngprogress' in the _app file and put it on top of: import Page from '../components/....'; .
+NProgress itself has couple of methods, it can start, can set to a certain amount with .set() and ... . So we're gonna start() it as soon as
+a link starts and finish it when the page transition is done. So go to _app and we need to import the Router from nextjs so that we can hook
+into a couple events that they have and put it on top of: import Page from ... .
+
+Important: Put import statements of installed packages, ON TOP OF import statements of your OWN components and ..., in your files, like what I
+ did in _app file.
+
+In Router.events.on(); , the first arg you pass to .on() is the event that you want to listen and the second arg is a function that would be
+executed when that event which we're listening to, happens.
+
+Now let's swap the default NProgress styles with our OWN custom ngprogress css which is inside components/styles folder and it's not really a
+component, it's just a .css file.
+
+Initially wes bos had that nprogress.css file in the public/static folder, but it's better to import into our app. So get rid of that
+default import of nprogress css.
+
+Very rarely we do need to hook into the nextjs's Router, unless we want to either listen for events or programmatically change the page.
+
+That was how we implement NProgress in nextjs.
+
+9.09 - Fixing Styled Components Flicker on Server Render:
+*/
 
